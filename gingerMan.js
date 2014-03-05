@@ -1,7 +1,7 @@
 var gingerMan = {
 	status: 'ready',
 	level: 0,
-	text: "....    You can't catch me. I'm the Ginger Bread Man. ",
+	saying: "....    You can't catch me. I'm the Ginger Bread Man. ",
 
 	run: function (){
 		return "Haha! Run as fast as I can...<br />";
@@ -25,39 +25,50 @@ var gingerMan = {
 	response: function(desp){
 
 		win = false;
-		gameAction = document.getElementById('myAction').value;
+		gameAction = $('#myAction').val();
+		
 		if (gameAction !== '')
 		{
 			gingerAct = Math.random() * 10;
 			if (gingerAct > 7)
 			{
-				message = this.run() + this.text;
+				message = this.run();
 			}
 			else if (gingerAct > 5)
 			{
-				message = this.jump() + this.text;
+				message = this.jump();
 			}
 			else if (gingerAct > 2)
 			{
-				message = this.miss() + this.text;
+				message = this.miss();
 			}
 			else
 			{
-				message =  this.fail(gameAction) + this.text;
+				message =  this.fail(gameAction);
 				win = true;
 			}
 			
+			message += this.saying;
+
 			// desp = document.getElementById('description');
 			if (win === true)
 			{
 				alert(message);
-				desp.innerHTML = "Level " + this.level + ". HOHA HO ! !<br />";
+				desp_str = "Level " + this.level + ". HOHA HO ! ! <br />";
+				desp.html(desp_str);
 			}
 			else
 			{
-				desp.innerHTML += "You " + gameAction + ". " + message + "<br />";
+				desp_str = "You " + gameAction + ". " + message + "<br />";
+				desp.append(desp_str);
 			}
-			document.getElementById('myAction').value = '';
+			$('#myAction').val('');
+			$('html, body').animate({
+                     scrollTop: $(document).height()
+                 },1500);
+//			$('#myAction').scrollTop();
+			// var pageHeight = document.body.scrollHeight;
+			// window.scrollTo(0, pageHeight/2);
 		}
 		return true;
 	}
