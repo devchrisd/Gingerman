@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <title>GingerMan Tag</title>	
+<script type="text/javascript" src='jquery-2.1.0.js'></script>
 <script type="text/javascript" src='gingerMan.js'></script>
 </head>
 <body>
@@ -21,7 +22,7 @@
 </div>
 
 <div>
-<form id='game' onsubmit="gingerMan.response(document.getElementById('description')); return false;" action=''>
+<form id='game' onsubmit="gingerMan.response($('#description')); return false;" action=''>
 	<input type='text' value='' id='myAction' />
 
 	<input type='submit' value='Go' />
