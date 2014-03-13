@@ -1,8 +1,10 @@
 var gingerMan = {
+
 	status: 'ready',
 	level: 0,
 	saying: "....    You can't catch me. I'm the Ginger Bread Man. ",
 
+	// Actions of gingerMan
 	run: function (){
 		return "Haha! Run as fast as I can...<br />";
 	},
@@ -25,10 +27,12 @@ var gingerMan = {
 	response: function(desp){
 
 		win = false;
+		// get user's action
 		gameAction = $('#myAction').val();
 		
 		if (gameAction !== '')
 		{
+			// Create random action for gingerMan after user submit something
 			gingerAct = Math.random() * 10;
 			if (gingerAct > 7)
 			{
@@ -51,6 +55,7 @@ var gingerMan = {
 			message += this.saying;
 
 			// desp = document.getElementById('description');
+			// gingerMan say something here
 			if (win === true)
 			{
 				alert(message);
@@ -62,6 +67,8 @@ var gingerMan = {
 				desp_str = "You " + gameAction + ". " + message + "<br />";
 				desp.append(desp_str);
 			}
+
+			// reset user input and scroll up page.
 			$('#myAction').val('');
 			$('html, body').animate({
                      scrollTop: $(document).height()
@@ -74,6 +81,13 @@ var gingerMan = {
 	}
 };
 
+$(function(){
+	$('#go').hover (
+		function(){
+			$(this).toggleClass('ovr', 'btn');
+		}
+	);
+});
 /*
 var untilities = {
 	printAllMembers: function (targetObj) {
