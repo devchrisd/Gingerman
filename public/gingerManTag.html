@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<title>GingerMan Tag</title>	
+<script type="text/javascript" src='jquery-2.1.0.js'></script>
+<script type="text/javascript" src='gingerMan.js'></script>
+<link rel="stylesheet" type="text/css" href="common.css">
+</head>
+
+<body>
+
+<div id='start'>
+	<img src='img/gingerman.jpg' /> <br />
+
+	<script type='text/javascript'>
+		if (gingerMan.status == 'ready')
+		{
+			document.write(gingerMan.run());
+		}
+	</script>
+</div>
+
+<div id='description'>
+	HAHA ! 
+</div>
+
+<div>
+<form id='game' onsubmit="gingerMan.response($('#description')); return false;" action=''>
+	<input type='text' value='' id='myAction' />
+
+	<input class='btn' type='submit' id='go' value='Go' />
+</form>
+</div>
+</body>
+</html>
