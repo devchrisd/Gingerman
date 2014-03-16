@@ -1,21 +1,57 @@
+function do_submit()
+{
+	if ($('#myAction').val() == '')
+	{
+		alert("Yo ! Dude! You do something !" + gingerMan.saying);
+	}
+	else
+	{
+		gingerMan.response($('#description'));
+	}
+	return false;
+}
+
 var gingerMan = {
 
 	status: 'ready',
-	level: 0,
-	saying: "....    You can't catch me. I'm the Ginger Bread Man. ",
+	level: 1,
+	highest_level: 100,	// for difficulty setting
 
+	saying: "....    You can't catch me. I'm the Ginger Bread Man. ",
+	pre_response: new Array
+					(
+						"Haha ! ", "Hoho ! ", "Aha ! ", 
+						"Yooho..", "Duh! ", "Hohoho", "wadaBooda ! ",
+						" Bro, ", " Bingo ! "
+					),
+
+	disgusting: new Array
+					(
+						"fart", "poo", "pee"
+					),
+					
 	// Actions of gingerMan
 	run: function (){
-		return "Haha! Run as fast as I can...<br />";
+		return " Run as fast as I can...<br />";
 	},
 
 	jump: function (){
-		return "Haha! Jump as high as I can...<br />";
+		return " Jump as high as I can...<br />";
 	},
 
 	miss: function ()
 	{
-		return "Oops, You missed it...<br />" ;
+		return " Oops, You missed it...<br />" ;
+	},
+
+	rollover: function ()
+	{
+		return " Yeah! I roll over.<br />" ;
+	},
+
+	swim: function ()
+	{
+		return " I swim in the river. Oh. I don't like the water. <br />";
 	},
 
 	fail: function(act)
@@ -26,33 +62,50 @@ var gingerMan = {
 
 	response: function(desp){
 
+		if (this.level === this.highest_level)
+		{
+			alert("Congratulations! You have get the highest level. You are the WINNER !");
+			desp.html(desp_str);
+			return true;
+		}
+
 		win = false;
 		// get user's action
 		gameAction = $('#myAction').val();
 		
 		if (gameAction !== '')
 		{
+			message = '';
 			// Create random action for gingerMan after user submit something
-			gingerAct = Math.random() * 10;
-			if (gingerAct > 7)
+			random_action = Math.random() * this.highest_level;
+			difficult_index = this.level/this.highest_level * 10;
+			if (random_action > 80)
 			{
-				message = this.run();
+				message += this.run();
 			}
-			else if (gingerAct > 5)
+			else if (random_action > 70)
 			{
-				message = this.jump();
+				message += this.swim();
 			}
-			else if (gingerAct > 2)
+			else if (random_action > 50)
 			{
-				message = this.miss();
+				message += this.miss();
+			}
+			else if (random_action > 35)
+			{
+				message += this.jump();
+			}
+			else if (random_action > 22-difficult_index)
+			{
+				message += this.rollover();
 			}
 			else
 			{
-				message =  this.fail(gameAction);
+				message = this.fail(gameAction);
 				win = true;
 			}
 			
-			message += this.saying;
+			message += this.saying + ' My mark is ' + random_action;
 
 			// desp = document.getElementById('description');
 			// gingerMan say something here
@@ -64,7 +117,17 @@ var gingerMan = {
 			}
 			else
 			{
-				desp_str = "You " + gameAction + ". " + message + "<br />";
+				if ($.inArray(gameAction, this.disgusting) !== -1)
+				{
+					prefix = "Yuk! ";
+				}
+				else
+				{
+					// get random pre_response msg from gameAction
+					inx =  parseInt(Math.random() * this.pre_response.length) ;
+					prefix = this.pre_response[inx];
+				}
+				desp_str = prefix+ " You " + gameAction + ". " + message + "<br />";
 				desp.append(desp_str);
 			}
 
