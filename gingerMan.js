@@ -1,6 +1,8 @@
 // document ready
 // $(document).ready (function(){})
 $(function(){
+	
+	$('#myAction').focus();
 
 	$('#go').hover (
 		function(){
@@ -32,6 +34,7 @@ var gingerMan = {
 
 	status: 'ready',
 	level: 1,
+	win: false, 
 	highest_level: 100,	// for difficulty setting
 
 	saying: "....    You can't catch me. I'm the Ginger Bread Man. ",
@@ -83,6 +86,7 @@ var gingerMan = {
 	fail: function(act)
 	{
 		this.level++;
+		this.win = true;
 		return "Uhhhhh, You " + act + ". You win level " + eval(this.level-1) + ". Let's go to next level! \n";
 	},
 
@@ -95,7 +99,7 @@ var gingerMan = {
 			return true;
 		}
 
-		win = false;
+		this.win = false;
 		// get user's action
 		gameAction = $('#myAction').val();
 		
@@ -128,18 +132,19 @@ var gingerMan = {
 			else
 			{
 				message = this.fail(gameAction);
-				win = true;
 			}
 			
 			message += this.saying + ' My mark is ' + random_action;
 
 			// desp = document.getElementById('description');
 			// gingerMan say something here
-			if (win === true)
+			if (this.win === true)
 			{
 				alert(message);
 				desp_str = "Level " + this.level + ". HOHA HO ! ! <br />";
-				desp.html(desp_str);
+				desp.fadeOut(500)
+					.html(desp_str)
+					.fadeIn(1000);
 			}
 			else
 			{
@@ -159,7 +164,8 @@ var gingerMan = {
 			}
 
 			// reset user input and scroll up page.
-			$('#myAction').val('');
+			$('#myAction').val('')
+						  .focus();
 			$('html, body').animate({
                      scrollTop: $(document).height()
                  },1500);
