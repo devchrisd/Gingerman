@@ -1,5 +1,7 @@
 <!DOCTYPE html>
 <html>
+
+<head>
 <title>GingerMan Tag</title>	
 <script type="text/javascript" src='jquery-2.1.0.js'></script>
 <script type="text/javascript" src='gingerMan.js'></script>
@@ -8,15 +10,9 @@
 
 <body>
 
-<div id='start'>
+<div id='start_div'>
 	<img src='img/gingerman.jpg' /> <br />
-
-	<script type='text/javascript'>
-		if (gingerMan.status == 'ready')
-		{
-			document.write(gingerMan.run());
-		}
-	</script>
+	<h2 id='start'></h2>
 </div>
 
 <div id='description'>
@@ -24,9 +20,8 @@
 </div>
 
 <div>
-<form id='game' onsubmit="return do_submit()" action=''>
+<form id='game' action=''>
 	<input type='text' value='' id='myAction' />
-
 	<input class='btn' type='submit' id='go' value='Go' />
 </form>
 </div>
