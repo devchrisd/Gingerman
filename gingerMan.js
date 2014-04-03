@@ -11,14 +11,8 @@ $(function(){
 
     $('#game').submit (
         function(){
-            if ($('#myAction').val() === '')
-            {
-                alert("Yo ! Dude! You do something ! \n" + gingerMan.saying);
-            }
-            else
-            {
-                gingerMan.response($('#description'));
-            }
+            response = gingerMan.response($('#description'));
+
             return false;
         });
 
@@ -42,7 +36,7 @@ var gingerMan = {
 
     status: 'ready',
     level: 1,
-    win: false, 
+    win: false,
     highest_level: 100, // for difficulty setting
 
     saying: "... You can't catch me. I'm the Ginger Bread Man. ",
@@ -62,11 +56,31 @@ var gingerMan = {
     disgusting_response: new Array
                     (
                         "Yuck ! ", "That's disgusting. ", "Nasty ",
-                        "Ugh...", "What Da ?!", 
+                        "Ugh...", "What Da ?!",
                         "Ma'am, I think your behaviour is improper to this game.",
                         "AAh. Look at you! ", "Uhh, I feel uncomfortable. ",
                         "Sorry, I have an uncomfortable feeling deep in my throat."
-                    ),                  
+                    ),
+
+    /*
+        blind
+        bounce
+        clip
+        drop
+        explode
+        fade
+        fold
+        highlight
+        puff
+        pulsate
+        scale
+        shake
+        size
+        slide
+        transfer
+    */
+    effectType : '',
+
     // Actions of gingerMan
     run: function (){
         return " Run as fast as I can...<br />";
@@ -98,7 +112,21 @@ var gingerMan = {
         return "Uhhhhh, You " + act + ". You win level " + eval(this.level-1) + ". Let's go to next level! \n";
     },
 
-    response: function(desp){
+    response: function(desp)
+    {
+        // get user's action
+        gameAction = $('#myAction').val();
+
+        if (gameAction === '')
+        {
+            this.effectType = 'shake';
+            // set effect from action
+            this.runEffect();
+            
+            //delay(500);
+            alert("Yo ! Dude! You do something ! \n" + gingerMan.saying);
+            return true;
+        }
 
         if (this.level === this.highest_level)
         {
@@ -108,9 +136,7 @@ var gingerMan = {
         }
 
         this.win = false;
-        // get user's action
-        gameAction = $('#myAction').val();
-        
+
         if (gameAction !== '')
         {
             message = '';
@@ -120,28 +146,37 @@ var gingerMan = {
             if (random_action > 80)
             {
                 message += this.run();
+                this.effectType = 'drop';
             }
             else if (random_action > 70)
             {
                 message += this.jump();
+                this.effectType = 'bounce';
             }
             else if (random_action > 50)
             {
                 message += this.miss();
+                this.effectType = 'clip';
             }
             else if (random_action > 35)
             {
                 message += this.swim();
+                this.effectType = 'explode';
             }
             else if (random_action > 22-difficult_index)    // it will getting lower when level goes up. So less chance to win.
             {
                 message += this.rollover();
+                this.effectType = 'clip';
             }
             else
             {
                 message = this.fail(gameAction);
+                this.effectType = 'pulsate';
             }
-            
+ 
+            // set effect from action
+            this.runEffect();
+
             message += this.saying + ' My mark is ' + random_action;
 
             // desp = document.getElementById('description');
@@ -168,6 +203,7 @@ var gingerMan = {
                     prefix = this.pre_response[inx];
                 }
                 desp_str = prefix+ " You " + gameAction + ". " + message + "<br />";
+
                 desp.append(desp_str);
             }
 
@@ -183,7 +219,38 @@ var gingerMan = {
             // window.scrollTo(0, pageHeight/2);
         }
         return true;
-    }
+    },
+
+    // run the currently selected effect
+    runEffect : function ()
+    {
+        // most effect types need no options passed by default
+        var options = {};
+
+        // some effects have required parameters
+        if ( this.effectType === "scale" ) {
+            options = { percent: 0 };
+        } else if ( this.effectType === "transfer" ) {
+            options = { to: "#button", className: "ui-effects-transfer" };
+        } else if ( this.effectType === "size" ) {
+            options = { to: { width: 200, height: 60 } };
+        }
+
+        // run the effect
+        $( "#gingerman" ).effect( this.effectType, options, 300, this.callback );
+    },
+
+    // callback function to bring a hidden box back
+    callback: function() {
+        setTimeout
+        (
+            function() {
+                $( "#gingerman" ).removeAttr( "style" ).fadeIn();
+            },
+            300
+        );
+    },
+
 };
 
 /*

@@ -3,6 +3,11 @@
 
     img {border:0px; }
 
+    #gingerman_div {
+        height: 200px;
+        position: relative;
+    }
+
     body {
         height:100%;
         font:12px Arial;
