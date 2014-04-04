@@ -85,11 +85,11 @@ var gingerMan = {
         'format'    : [' msg ',                             'effectType'],
 
         'fail'      : [" Let's go to next level! \n",       'pulsate'],
-        'run'       : [' Run as fast as I can...<br />',    'drop'],
-        'jump'      : [' Jump as high as I can...<br />',   'bounce'],
-        'miss'      : [' Oops, You missed it...<br />',     'clip'],
-        'rollover'  : [' Yeah! I roll over.<br />',         'clip'],
-        'swim'      : [" I swim in the river. Oh. I don't like the water. <br />", 'explode'],
+        'run'       : [' Run as fast as I can...',    'drop'],
+        'jump'      : [' Jump as high as I can...',   'bounce'],
+        'miss'      : [' Oops, You missed it...',     'clip'],
+        'rollover'  : [' Yeah! I roll over.',         'clip'],
+        'swim'      : [" I swim in the river. Oh. I don't like the water. ", 'explode'],
     },
 
     response: function(desp)
@@ -160,7 +160,8 @@ var gingerMan = {
             // set effect from action
             this.runEffect();
 
-            message += this.saying + ' My mark is ' + random_action;
+            // message += this.saying + ' My mark is ' + random_action;
+            message += ' My mark is ' + random_action;
 
             // desp = document.getElementById('description');
             // gingerMan say something here
@@ -187,7 +188,7 @@ var gingerMan = {
                     inx =  get_random_num(this.pre_response.length);
                     prefix = this.pre_response[inx];
                 }
-                desp_str = prefix+ " You " + gameAction + ". " + message + "<br />";
+                desp_str = prefix+ " You " + gameAction + ". " + message + "<br /> <br />";
 
                 desp.append(desp_str);
             }
