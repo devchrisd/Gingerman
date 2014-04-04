@@ -21,7 +21,7 @@ $(function(){
         {
             if (gingerMan.status == 'ready')
             {
-                $('#start').html(gingerMan.run());
+                $('#start').html(gingerMan.saying);
             }
             $('#myAction').focus();
         });
@@ -34,12 +34,12 @@ function get_random_num(length)
 
 var gingerMan = {
 
-    status: 'ready',
-    level: 1,
-    win: false,
-    highest_level: 100, // for difficulty setting
+    level   :   1,
+    win     :   false,
+    status  :   'ready',
+    saying  :   "... You can't catch me. I'm the Ginger Bread Man. ",
 
-    saying: "... You can't catch me. I'm the Ginger Bread Man. ",
+    highest_level:  100, // for difficulty setting
     
     pre_response: new Array
                     (
@@ -81,35 +81,15 @@ var gingerMan = {
     */
     effectType : '',
 
-    // Actions of gingerMan
-    run: function (){
-        return " Run as fast as I can...<br />";
-    },
+    response_msg : {
+        'format'    : [' msg ',                             'effectType'],
 
-    jump: function (){
-        return " Jump as high as I can...<br />";
-    },
-
-    miss: function ()
-    {
-        return " Oops, You missed it...<br />" ;
-    },
-
-    rollover: function ()
-    {
-        return " Yeah! I roll over.<br />" ;
-    },
-
-    swim: function ()
-    {
-        return " I swim in the river. Oh. I don't like the water. <br />";
-    },
-
-    fail: function(act)
-    {
-        this.level++;
-        this.win = true;
-        return "Uhhhhh, You " + act + ". You win level " + eval(this.level-1) + ". Let's go to next level! \n";
+        'fail'      : [" Let's go to next level! \n",       'pulsate'],
+        'run'       : [' Run as fast as I can...<br />',    'drop'],
+        'jump'      : [' Jump as high as I can...<br />',   'bounce'],
+        'miss'      : [' Oops, You missed it...<br />',     'clip'],
+        'rollover'  : [' Yeah! I roll over.<br />',         'clip'],
+        'swim'      : [" I swim in the river. Oh. I don't like the water. <br />", 'explode'],
     },
 
     response: function(desp)
@@ -145,33 +125,36 @@ var gingerMan = {
             difficult_index = this.level / this.highest_level * 10;
             if (random_action > 80)
             {
-                message += this.run();
-                this.effectType = 'drop';
+                message += this.response_msg['run'][0];
+                this.effectType = this.response_msg['run'][1];
             }
             else if (random_action > 70)
             {
-                message += this.jump();
-                this.effectType = 'bounce';
+                message += this.response_msg['jump'][0];
+                this.effectType = this.response_msg['jump'][1];
             }
             else if (random_action > 50)
             {
-                message += this.miss();
-                this.effectType = 'clip';
+                message += this.response_msg['miss'][0];
+                this.effectType = this.response_msg['miss'][1];
             }
             else if (random_action > 35)
             {
-                message += this.swim();
-                this.effectType = 'explode';
+                message += this.response_msg['swim'][0];
+                this.effectType = this.response_msg['swim'][1];
             }
-            else if (random_action > 22-difficult_index)    // it will getting lower when level goes up. So less chance to win.
+            else if (random_action > 22-difficult_index)
+            // it gets lower when level goes up. So less chance to win.
             {
-                message += this.rollover();
-                this.effectType = 'clip';
+                message += this.response_msg['rollover'][0];
+                this.effectType = this.response_msg['rollover'][1];
             }
             else
             {
-                message = this.fail(gameAction);
-                this.effectType = 'pulsate';
+                this.win = true;
+                this.level++;
+                message = this.response_msg['fail'][0];
+                this.effectType = this.response_msg['fail'][1];
             }
  
             // set effect from action
@@ -183,6 +166,7 @@ var gingerMan = {
             // gingerMan say something here
             if (this.win === true)
             {
+                message = "Uhhhhh, You " + gameAction + ". You win level " + eval(this.level-1) + ". " + message;
                 alert(message);
                 desp_str = "Level " + this.level + ". HOHA HO ! ! <br />";
                 desp.fadeOut(500)
@@ -191,6 +175,7 @@ var gingerMan = {
             }
             else
             {
+                // special treat to disgusting player
                 if ($.inArray(gameAction, this.disgusting) !== -1)
                 {
                     inx = get_random_num(this.disgusting_response.length);
