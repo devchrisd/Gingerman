@@ -16,6 +16,8 @@ $(function(){
             return false;
         });
 
+    $('#gingerman_icon').draggable();
+
     $(window).load (
         function()
         {
@@ -223,7 +225,7 @@ var gingerMan = {
         }
 
         // run the effect
-        $( "#gingerman" ).effect( this.effectType, options, 300, this.callback );
+        $( "#gingerman_icon" ).effect( this.effectType, options, 300, this.callback );
     },
 
     // callback function to bring a hidden box back
@@ -231,7 +233,7 @@ var gingerMan = {
         setTimeout
         (
             function() {
-                $( "#gingerman" ).removeAttr( "style" ).fadeIn();
+                $( "#gingerman_icon" ).fadeIn();
             },
             300
         );
