@@ -8,6 +8,9 @@
         position: relative;
     }
 
+    #level {
+        text-align: right;
+    }
     body {
         height:100%;
         font:12px Arial;

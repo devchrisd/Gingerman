@@ -24,6 +24,7 @@ $(function(){
             if (gingerMan.status == 'ready')
             {
                 $('#start').html(gingerMan.saying);
+                $('#level').text( 'Level 1' );
             }
             $('#myAction').focus();
         });
@@ -171,10 +172,16 @@ var gingerMan = {
             {
                 message = "Uhhhhh, You " + gameAction + ". You win level " + eval(this.level-1) + ". " + message;
                 alert(message);
-                desp_str = "Level " + this.level + ". HOHA HO ! ! <br />";
+                $('#level').text( "Level " + this.level + ". HOHA HO ! ! " );
+                desp_str = '';
                 desp.fadeOut(500)
                     .html(desp_str)
                     .fadeIn(1000);
+
+                position = 0;
+                $('html, body').animate({
+                     scrollTop: position
+                     },1000);
             }
             else
             {
@@ -191,20 +198,23 @@ var gingerMan = {
                     prefix = this.pre_response[inx];
                 }
                 desp_str = prefix+ " You " + gameAction + ". " + message + "<br /> <br />";
-
                 desp.append(desp_str);
+
+                if ($('#myAction').position().top > $(window).height())
+                {
+                    position = $(document).height()-16;
+                    $('html, body').animate({
+                         scrollTop: position
+                         },1000);
+                }
             }
+
+                // var pageHeight = document.body.scrollHeight;
+                // window.scrollTo(0, pageHeight/2);
 
             // reset user input and scroll up page.
             $('#myAction').val('')
                           .focus();
-
-            $('html, body').animate({
-                     scrollTop: $(document).height()
-                 },1500);
-//          $('#myAction').scrollTop();
-            // var pageHeight = document.body.scrollHeight;
-            // window.scrollTo(0, pageHeight/2);
         }
         return true;
     },
